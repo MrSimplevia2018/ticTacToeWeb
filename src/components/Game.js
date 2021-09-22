@@ -71,11 +71,34 @@ export default class Game extends Component {
        
     }
 
+    jumpTo(step) {
+        this.setState({
+            xIsNext: (step %2 ) === 0,
+            stepNumber: step
+        })
+        console.log(step, step)
+    }
+
+    startGame(step) {
+        this.setState({
+            xIsNext: (step %2 ) === 0,
+            stepNumber: step
+        })
+    }
+
     render () {
         const history = this.state.history;
         const current = history[this.state.stepNumber];
         let winner = this.callAPI(current.squares);
-
+        const moves = history.map((step, move) => {
+            console.log(move, "movesss")
+            const desc = move ? 'Go to #' + move : 'Start the Game';
+            return (
+                <li key={move}>
+                    <button onClick={() => this.jumpTo(move)}>{desc}</button>
+                </li>
+            )
+        });
         let status;
         // if array squares does not have null values, display tie message else display winner of player's turn
         if (current.squares.includes(null) === false) {
@@ -93,6 +116,9 @@ export default class Game extends Component {
                </div>
                <div className="game-info">
                    <div>{status}</div>
+                   <div className="m-t-10"></div>
+                   <button onClick={() => this.startGame(0)}>Start the Game</button>
+                   
                </div>
             </div>
             
